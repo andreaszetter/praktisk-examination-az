@@ -1,0 +1,245 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+h2{
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul, ol {
+    margin-bottom: 10px;
+    padding-left: 20px;
+}
+
+ul li {
+    list-style: disc;
+}
+header{
+    background: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+.container{
+    max-width: 70%;
+    margin: auto;
+
+}
+@media (max-width: 768px){
+    .container{
+        max-width: 100%;
+    }
+}
+/* Custom Select Box */
+.custom-select {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.select-selected {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.select-search {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.select-items {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000; /* Ensure the dropdown appears on top */
+    width: 100%;
+    max-height: 200px; /* Optional: limit the height of the dropdown */
+    overflow-y: auto; /* Optional: add a scrollbar if the dropdown is too tall */
+}
+
+.select-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.select-item:hover, .select-item-active {
+    background-color: #ddd;
+}
+
+.select-hide {
+    display: none;
+}
+
+.select-arrow-active::after {
+    content: "▲";
+    position: absolute;
+    right: 10px;
+    top: 14px;
+}
+
+.select-selected::after {
+    content: "▼";
+    position: absolute;
+    right: 10px;
+    top: 14px;
+}
+
+.champion-board {
+    position: relative;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    display: flex;
+    flex-direction: column;
+    background-size: cover;
+    background-position: top;
+}
+
+.champion-notes {
+    padding: 10px;
+    margin-top:10px;
+    margin-left:20px;
+    width: 100%;
+    height: 100px;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+    .champion-board {
+        flex-direction: row;
+        background-size: 150%; /* Show more of the splash art */
+        background-position: top; /* Ensure the top half is always visible */
+    }
+
+    .champion-notes {
+        width: 30%;
+
+    }
+}
+
+/* Hide notes section on smaller screens */
+@media (max-width: 767px) {
+    .champion-notes {
+        display: none;
+    }
+}
+
+.champion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    font-size: 2rem;
+}
+
+.champion-header img {
+    margin-right: 10px;
+    height: 40px;
+    width: auto;
+}
+
+.timer-section {
+    margin-bottom: 10px;
+}
+
+.timer-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.timer-form label {
+    margin-right: 10px;
+}
+
+.timer-form input {
+    margin-right: 10px;
+}
+
+.time-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.time-table th, .time-table td {
+    border: 1px solid #ccc;
+    padding: 4px;
+    text-align: left;
+    position: relative;
+    vertical-align: top;
+}
+
+.time-table th {
+    background-color: #f4f4f4;
+}
+
+.remove-champion {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: red;
+    cursor: pointer; /* Change cursor to pointer */
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.remove-champion:hover {
+    color: darkred;
+}
+
+.remove-timer {
+    background: white;
+    border: 1px solid black;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50%; /* Make it circular */
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.remove-timer:hover {
+    background: black;
+    color: white;
+}

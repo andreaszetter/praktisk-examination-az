@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>League of Legends Jungle Timers</title>
+</head>
+<body>
+    <header>
+        <h1>LoL Jungle clear times</h1>
+    </header>
+    <main>
+        <div class="container">
+            <div class="add-champion">
+                <h2>Add a new champion</h2>
+                <h3>Select a champion by searching in the field below(it has all champions since 14.20.1)</h3>
+                <h3>After selecting a champion, click the button to add it to the list</h3>
+                <form id="champion-form">
+                    <label for="champion-search">Champion:</label>
+                    <div class="custom-select">
+                        <input type="text" id="champion-search" class="select-search" placeholder="Search champions..." autocomplete="off">
+                        <div class="select-items select-hide"></div>
+                    </div>
+                    <button type="submit">Add champion</button>
+                </form>
+            </div>
+            <div class="timers">
+                <h2>Leaderboards</h2>
+                <div id="leaderboards"></div>
+            </div>
+            <button id="clear-leaderboards">Clear Leaderboards</button>
+        </div>
+    </main>
+    
+    <script src="scripts.js"></script>
+</body>
+</html>
