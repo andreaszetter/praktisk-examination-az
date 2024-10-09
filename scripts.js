@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
 
-    // Fetch champion data from Data Dragon API and then load champions from localStorage
+    // Hämta champion namn och bilder från Data Dragon API:n (LoLs API) och ladda sedan champion-boards från minnet (om man skapat några)
     fetchChampions().then(() => {
         loadChampions();
     });
@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 addChampion(selectedChampion);
                 saveChampions();
                 
-                // Clear the input field after adding a champion
+                // Rensa sökrutanefter att ha lagt till en champion
                 const searchInput = document.querySelector('.select-search');
                 searchInput.value = '';
                 searchInput.dataset.value = '';
                 
-                // Hide the dropdown
+                // Dölj dropdown-menyn
                 const selectItems = document.querySelector('.select-items');
                 if (selectItems) {
                     selectItems.classList.add('select-hide');
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.error('Clear leaderboards button not found');
     }
 
-    // Show dropdown when search field is focused
+    // Visar dropdown-menyn när man klickar in på sökfältet
     const searchInput = document.querySelector('.select-search');
     if (searchInput) {
         searchInput.addEventListener('focus', function() {
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     }
 
-    // Hide dropdown when an item is selected
+    // Ändrar menyns display till none när man valt en champ
     const selectItems = document.querySelector('.select-items');
     if (selectItems) {
         selectItems.addEventListener('click', function(event) {
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 function fetchChampions() {
-    const apiUrl = 'https://ddragon.leagueoflegends.com/cdn/14.20.1/data/en_US/champion.json'; // Updated API version
+    const apiUrl = 'https://ddragon.leagueoflegends.com/cdn/14.20.1/data/en_US/champion.json'; // Senaste LoL API 09/10/2024
     return fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
@@ -88,7 +88,7 @@ function fetchChampions() {
                     item.style.backgroundSize = 'contain';
                     item.style.backgroundRepeat = 'no-repeat';
                     item.style.backgroundPosition = 'left center';
-                    item.style.paddingLeft = '40px'; // Adjust padding to make space for the image
+                    item.style.paddingLeft = '40px';
                     selectItems.appendChild(item);
                 }
             }
@@ -96,20 +96,20 @@ function fetchChampions() {
         .catch(error => console.error('Error fetching champions:', error));
 }
 
-function addChampion(championName) {
+function addChampion(championName, timers = [], notes = '') {
     const leaderboards = document.getElementById('leaderboards');
     if (!leaderboards) {
         console.error('Leaderboards container not found');
         return;
     }
 
-    // Check if the champion already exists
+    // Kontrollera om champion board redan finns för champen
     if (document.getElementById(championName)) {
         console.warn(`Champion ${championName} already exists`);
         return;
     }
 
-    // Create the champion board
+    // Skapar en champion-board
     const championBoard = document.createElement('div');
     championBoard.id = championName;
     championBoard.classList.add('champion-board');
@@ -121,7 +121,7 @@ function addChampion(championName) {
             <img src="https://ddragon.leagueoflegends.com/cdn/14.20.1/img/champion/${championName}.png" alt="${championName}">
             <h3>${championName}</h3>
         </div>
-        <textarea class="champion-notes" placeholder="Notes"></textarea>
+        <textarea class="champion-notes" id="${championName}-notes" name="${championName}-notes" placeholder="Notes">${notes}</textarea>
         <table class="time-table">
             <thead>
                 <tr>
@@ -131,11 +131,11 @@ function addChampion(championName) {
             <tbody>
             </tbody>
         </table>
-        <input type="text" class="time-input" placeholder="Add time (e.g., 1m30s)">
+        <input type="text" class="time-input" id="${championName}-time-input" name="${championName}-time-input" placeholder="Add time (e.g., 1m30s)">
         <button class="add-time">Add Time</button>
     `;
 
-    // Add event listener to the "Add Time" button
+    // Lägg till eventlistener till "Add Time"-knappen
     const addTimeButton = championBoard.querySelector('.add-time');
     addTimeButton.addEventListener('click', () => {
         const timeInput = championBoard.querySelector('.time-input');
@@ -161,7 +161,7 @@ function addChampion(championName) {
             saveChampions();
         });
 
-        // Insert the new row in the correct position
+        // Stoppar in den nya raden på rätt plats
         const rows = Array.from(timeTableBody.querySelectorAll('tr'));
         let inserted = false;
         for (let i = 0; i < rows.length; i++) {
@@ -179,7 +179,33 @@ function addChampion(championName) {
         saveChampions();
     });
 
+    // Lägg till befintliga timers till time-table om de finns
+    const timeTableBody = championBoard.querySelector('.time-table tbody');
+    timers.sort(compareTimes).forEach(timerText => {
+        const timeRow = document.createElement('tr');
+        timeRow.innerHTML = `
+            <td>
+                ${timerText}
+                <button class="remove-timer">×</button>
+            </td>
+        `;
+
+        const removeButton = timeRow.querySelector('.remove-timer');
+        removeButton.addEventListener('click', () => {
+            timeTableBody.removeChild(timeRow);
+            saveChampions();
+        });
+
+        timeTableBody.appendChild(timeRow);
+    });
+
     leaderboards.appendChild(championBoard);
+
+    // Lägg till event-listener till notes så den sparas utan att man behöver klicka ur rutan
+    const notesTextarea = championBoard.querySelector('.champion-notes');
+    notesTextarea.addEventListener('input', () => {
+        saveChampions();
+    });
 }
 
 function compareTimes(a, b) {
@@ -200,21 +226,14 @@ function saveChampions() {
         return;
     }
     const champions = leaderboards.children;
-    const data = {};
+    const data = [];
 
     for (let champion of champions) {
-        const championName = champion.id;
-        const timerList = champion.querySelectorAll('tr');
-        const notesTextarea = champion.querySelector('.champion-notes');
-        data[championName] = {
-            timers: [],
-            notes: notesTextarea ? notesTextarea.value : ''
-        };
-
-        for (let timerItem of timerList) {
-            const timerText = timerItem.childNodes[0].textContent.trim().split('×')[0].trim();
-            data[championName].timers.push(timerText);
-        }
+        const notes = champion.querySelector('.champion-notes').value;
+        data.push({
+            html: champion.outerHTML,
+            notes: notes
+        });
     }
 
     localStorage.setItem('champions', JSON.stringify(data));
@@ -224,23 +243,32 @@ function loadChampions() {
     const data = JSON.parse(localStorage.getItem('champions'));
 
     if (data) {
-        for (let champion in data) {
-            addChampion(champion);
-            const championBoard = document.getElementById(champion);
-            const timeTableBody = championBoard.querySelector('.time-table tbody');
-            if (!timeTableBody) {
-                console.error(`Time table body not found for champion: ${champion}`);
-                continue;
-            }
+        const leaderboards = document.getElementById('leaderboards');
+        if (!leaderboards) {
+            console.error('Leaderboards container not found');
+            return;
+        }
+        data.forEach(championData => {
+            leaderboards.innerHTML += championData.html;
+        });
 
-            // Sort the times lexicographically before inserting them into the table
-            const sortedTimes = data[champion].timers.sort(compareTimes);
+        // Återanslut eventlisteners för "Add Time"- och "Remove Timer"-knapparna
+        document.querySelectorAll('.champion-board').forEach(championBoard => {
+            const addTimeButton = championBoard.querySelector('.add-time');
+            addTimeButton.addEventListener('click', () => {
+                const timeInput = championBoard.querySelector('.time-input');
+                const timeText = timeInput.value.trim();
 
-            for (let timerText of sortedTimes) {
+                if (!timeText.match(/^(\d+m)?(\d+s)?$/)) {
+                    console.error('Invalid time format');
+                    return;
+                }
+
+                const timeTableBody = championBoard.querySelector('.time-table tbody');
                 const timeRow = document.createElement('tr');
                 timeRow.innerHTML = `
                     <td>
-                        ${timerText}
+                        ${timeText}
                         <button class="remove-timer">×</button>
                     </td>
                 `;
@@ -251,14 +279,45 @@ function loadChampions() {
                     saveChampions();
                 });
 
-                timeTableBody.appendChild(timeRow);
+                // Sätt in den tiden på rätt plats
+                const rows = Array.from(timeTableBody.querySelectorAll('tr'));
+                let inserted = false;
+                for (let i = 0; i < rows.length; i++) {
+                    if (compareTimes(timeText, rows[i].querySelector('td').textContent.trim().split('×')[0].trim()) < 0) {
+                        timeTableBody.insertBefore(timeRow, rows[i]);
+                        inserted = true;
+                        break;
+                    }
+                }
+                if (!inserted) {
+                    timeTableBody.appendChild(timeRow);
+                }
+
+                timeInput.value = '';
+                saveChampions();
+            });
+
+            championBoard.querySelectorAll('.remove-timer').forEach(removeButton => {
+                removeButton.addEventListener('click', () => {
+                    const timeRow = removeButton.closest('tr');
+                    const timeTableBody = timeRow.closest('tbody');
+                    timeTableBody.removeChild(timeRow);
+                    saveChampions();
+                });
+            });
+
+            // Återställ notes
+            const notesTextarea = championBoard.querySelector('.champion-notes');
+            const championData = data.find(champ => champ.html.includes(championBoard.id));
+            if (championData) {
+                notesTextarea.value = championData.notes;
             }
 
-            const notesTextarea = championBoard.querySelector('.champion-notes');
-            if (notesTextarea) {
-                notesTextarea.value = data[champion].notes;
-            }
-        }
+            // Lägg till event-listeners till notes så den sparas utan att man behöver klicka ur rutan
+            notesTextarea.addEventListener('input', () => {
+                saveChampions();
+            });
+        });
     }
 }
 
