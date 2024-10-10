@@ -7,16 +7,28 @@
     Med det sagt:
 
     Vad behövs för att öppna sidan?
-    Det som behövs är bara filerna i repot, en internetuppkoppling för API:n och ett sätt att öppna index.html, såsom vscode, eller bara dra in den i chrome borde funka. Jag är inte helt säker på hur min "local storage"-lösning kommer att fungera då jag inte är så bra på det än, men den borde bara 
-    kunna spara filerna som behövs i cachen och sen ladda dem om allt funkar som det ska. (Har testat på flera olika sätt och har alltid funkat för mig).
+    Det som behövs är bara filerna i repot, en internetuppkoppling för API:n och ett sätt att öppna 
+    index.html, såsom vscode, eller bara dra in den i chrome borde funka. Jag är inte helt säker på 
+    hur min "local storage"-lösning kommer att fungera då jag inte är så bra på det än, men den 
+    borde bara 
+    kunna spara filerna som behövs i cachen och sen ladda dem om allt funkar som det ska. 
+    (Har testat på flera olika sätt och har alltid funkat för mig).
     
     Hur ska sidan användas?
-    Först lägger man till en "leaderboard" genom att söka på champions från League of Legends i search baren, då lägger hemsidan till en
-    "champion board" under rubriken leaderboards. På champion boarden finns en del olika funktioner så som en liten textruta där man kan skriva anteckningar som borde sparas även om hemsidan refreshas, en tabell med sina tider så man kan hålla koll på sina framsteg som också borde sparas.
-    För att lägga till tider i tabellen skriven man bara sin tid i formatet XmXs och då läggs den in i tid tabellen och sorteras från snabbast till långsammast. Navigation till about sidan sker via länkarna i headern, på about sidan kan man också se fulla splash arts av de champions man har lagt till.  
+    Först lägger man till en "leaderboard" genom att söka på champions från League of Legends i 
+    search baren, då lägger hemsidan till en "champion board" under rubriken leaderboards. 
+    På champion boarden finns en del olika funktioner så som en liten textruta där man kan 
+    skriva anteckningar som borde sparas även om hemsidan refreshas, en tabell med sina tider 
+    så man kan hålla koll på sina framsteg som också borde sparas.
+    För att lägga till tider i tabellen skriven man bara sin tid i formatet XmXs och då läggs 
+    den in i tid tabellen och sorteras från snabbast till långsammast. Navigation till about 
+    sidan sker via länkarna i headern, på about sidan kan man också se fulla splash arts av 
+    de champions man har lagt till.  
 
     Koncept:
-    Tanken är att man ska "fullcleara" jungeln med sin champion som man väljer, och försöka slå sig själv i hur snabbt man gör detta. Jag gjorde hemsidan eftersom att jag själv junglar och kände att detta hade varit en bra hemsida att ha!
+    Tanken är att man ska "fullcleara" jungeln med sin champion som man väljer, och försöka 
+    slå sig själv i hur snabbt man gör detta. Jag gjorde hemsidan eftersom att jag själv 
+    junglar och kände att detta hade varit en bra hemsida att ha!
 
 Projektkrav:
 1. HTML-struktur
