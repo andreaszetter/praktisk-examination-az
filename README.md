@@ -1,6 +1,8 @@
 # praktisk-examination-az
  praktisk examination Chas academy
 
+ länk till github repo: https://github.com/andreaszetter/praktisk-examination-az
+
 Vill bara börja detta dokument med att säga att jag förstår att detta är alldeles för mycket halvkass javascript kod för att bedömas på så kort tid, och vill vara tydlig med att jag förstår detta, och förväntar mig att framförallt bli bedömd på html och css delen. Har kommenterat koden så gott jag kan för att man ska få en snabb överblick men detta blev lite av ett passions projekt för mig och hade bara så roligt att utveckla funktionaliteten så det kändes synd att inte lämna in!
 
 **Med det sagt:**
