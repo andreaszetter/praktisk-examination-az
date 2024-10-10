@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         loadChampions();
     });
 
-    // Event-lyssnare för champion-formulär
+    // Eventlistener för champion-formulär
     const championForm = document.getElementById('champion-form');
     if (championForm) {
         championForm.addEventListener('submit', handleChampionFormSubmit);
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.error('Champion form not found');
     }
 
-    // Event-lyssnare för att rensa leaderboards
+    // Eventlistener för att rensa leaderboards
     const clearLeaderboardsButton = document.getElementById('clear-leaderboards');
     if (clearLeaderboardsButton) {
         clearLeaderboardsButton.addEventListener('click', clearLeaderboards);
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.error('Clear leaderboards button not found');
     }
 
-    // Event-lyssnare för sökfältet
+    // Eventlistener för sökfältet
     const searchInput = document.querySelector('.select-search');
     if (searchInput) {
         searchInput.addEventListener('focus', showDropdown);
@@ -30,19 +30,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
         searchInput.addEventListener('keydown', handleSearchInputKeydown);
     }
 
-    // Event-lyssnare för valda objekt
+    // Eventlistener för valda objekt
     const selectItems = document.querySelector('.select-items');
     if (selectItems) {
         selectItems.addEventListener('click', handleSelectItemClick);
     }
 
-    // Event-lyssnare för att klicka utanför dropdown
+    // Eventlistener för att klicka utanför dropdown
     document.addEventListener('click', handleDocumentClick);
 
-    // Event-lyssnare för att spara anteckningar innan sidan laddas om
+    // Eventlistener för att spara anteckningar innan sidan laddas om
     window.addEventListener('beforeunload', saveChampions);
 
-    // Lägg till live region för att meddela uppdateringar till skärmläsare
+    // Lägg till live region för att meddela uppdateringar till skärmläsare för tillgänglighet
     const liveRegion = document.createElement('div');
     liveRegion.id = 'live-region';
     liveRegion.setAttribute('aria-live', 'polite');
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.body.appendChild(liveRegion);
 });
 
-// Hanterar formulärinlämning för champion
+// Lägger till champion board och resettar search baren, sparar även informationen till localstorage med saveChampions funktionen
 function handleChampionFormSubmit(event) {
     event.preventDefault();
     const selectedChampion = document.querySelector('.select-search').dataset.value;
@@ -94,7 +94,7 @@ function hideDropdown() {
     }
 }
 
-// Filtrerar champions baserat på sökfältets värde
+// Filtrerar champions baserat på vad man skriver 
 function filterChampions() {
     const filter = this.value.toLowerCase();
     const selectItems = document.querySelectorAll('.select-item');
@@ -115,7 +115,7 @@ function highlightFirstVisibleItem() {
     }
 }
 
-// Hanterar tangenttryckningar i sökfältet
+// Hanterar tangenttryckningar i sökfältet så man kan gå upp och ner med tangentbord
 function handleSearchInputKeydown(event) {
     const selectItems = document.querySelectorAll('.select-item');
     const visibleItems = Array.from(selectItems).filter(item => item.style.display !== 'none');
@@ -154,7 +154,7 @@ function selectHighlightedItem(visibleItems, currentIndex) {
     }
 }
 
-// Hanterar klick på objekt i dropdown-menyn
+// Gör så att det faktiskt funkar att klicka på champs i dropdown
 function handleSelectItemClick(event) {
     const selectedItem = event.target;
     if (selectedItem && selectedItem.dataset.value) {
@@ -167,7 +167,7 @@ function handleSelectItemClick(event) {
     }
 }
 
-// Hanterar klick utanför dropdown-menyn
+// Stänger dropdown om man klickar bort
 function handleDocumentClick(event) {
     const searchInput = document.querySelector('.select-search');
     const selectItems = document.querySelector('.select-items');
@@ -180,7 +180,7 @@ function handleDocumentClick(event) {
     }
 }
 
-// Hämtar champions från API
+// Hämtar champions från API:n Data Dragon vilket är riots egna api
 function fetchChampions() {
     const apiUrl = 'https://ddragon.leagueoflegends.com/cdn/14.20.1/data/en_US/champion.json';
     return fetch(apiUrl)
@@ -189,7 +189,7 @@ function fetchChampions() {
         .catch(error => console.error('Error fetching champions:', error));
 }
 
-// Fyller dropdown-menyn med champions
+// Fyller dropdown med champions, icon och namn
 function populateChampionSelect(champions) {
     const selectItems = document.querySelector('.select-items');
     if (selectItems) {
@@ -209,7 +209,7 @@ function populateChampionSelect(champions) {
     }
 }
 
-// Lägger till en champion till leaderboards
+// Lägger till en champion-board till leaderboards
 function addChampion(championName, timers = [], notes = '') {
     const leaderboards = document.getElementById('leaderboards');
     if (!leaderboards) {
@@ -248,7 +248,7 @@ function addChampion(championName, timers = [], notes = '') {
         <button class="add-time" aria-label="Submit time for ${championName}">Submit</button>
     `;
 
-    // Lägg till event-lyssnare till "Add Time"-knappen
+    // Lägg till Eventlistener till submit eller add-time knapp
     const addTimeButton = championBoard.querySelector('.add-time');
     const timeInput = championBoard.querySelector('.time-input');
 
@@ -270,9 +270,10 @@ function addChampion(championName, timers = [], notes = '') {
 
     const notesTextarea = championBoard.querySelector('.champion-notes');
     notesTextarea.addEventListener('input', saveChampions);
-    notesTextarea.addEventListener('blur', saveChampions); // Save on blur as well
+    notesTextarea.addEventListener('blur', saveChampions); 
 
-    // Rensa sökfältet efter att en champion har lagts till
+    // Gör så man kan söka igen utan att behöva klicka ut och resetta sökfältet på det sättet
+    //dålig lösning men allt annat vart buggigt
     resetSearchBar();
 }
 
@@ -281,7 +282,7 @@ function addTime(championBoard) {
     const timeInput = championBoard.querySelector('.time-input');
     const timeText = timeInput.value.trim();
 
-    // Validera inmatningen
+    // Kolla så tiden är rätt format
     if (!timeText) {
         timeInput.setCustomValidity('Time cannot be empty.');
         timeInput.reportValidity();
@@ -311,11 +312,11 @@ function addTime(championBoard) {
     saveChampions();
     highlightTopTimes(timeTableBody);
 
-    // Announce the update to screen readers
+    // läser upp med screen reader
     announceUpdate('New time added: ' + timeText);
 }
 
-// Skapar en rad för en tid
+// Skapar en rad i time tabellen med en tid och en ta bort knapp
 function createTimeRow(timeText) {
     const timeRow = document.createElement('tr');
     timeRow.innerHTML = `
@@ -330,13 +331,13 @@ function createTimeRow(timeText) {
         saveChampions();
         highlightTopTimes(timeRow.closest('tbody'));
 
-        // Announce the removal to screen readers
+        // Läser upp till screen reader
         announceUpdate('Time removed: ' + timeText);
     });
     return timeRow;
 }
 
-// Infogar en rad för en tid i rätt ordning
+// Infogar en rad för en tid och sorterar tabellen
 function insertTimeRow(timeTableBody, timeRow, timeText) {
     const rows = Array.from(timeTableBody.querySelectorAll('tr'));
     let inserted = false;
@@ -352,7 +353,7 @@ function insertTimeRow(timeTableBody, timeRow, timeText) {
     }
 }
 
-// Jämför två tider
+// Jämför två tider används i sorteringen
 function compareTimes(a, b) {
     const parseTime = (time) => {
         const match = time.match(/(\d+m)?(\d+s)?/);
@@ -363,7 +364,7 @@ function compareTimes(a, b) {
     return parseTime(a) - parseTime(b);
 }
 
-// Markerar de bästa tiderna i tabellen
+// Markerar den snabbaste tiden med guldfärg
 function highlightTopTimes(timeTableBody) {
     const rows = Array.from(timeTableBody.querySelectorAll('tr'));
     rows.forEach(row => {
@@ -374,7 +375,7 @@ function highlightTopTimes(timeTableBody) {
     }
 }
 
-// Announce updates to screen readers
+// Funktion som jag använder för att läsa upp alla aria grejer
 function announceUpdate(message) {
     const liveRegion = document.getElementById('live-region');
     if (liveRegion) {
@@ -415,7 +416,7 @@ function loadChampions() {
     }
 }
 
-// Återfäster event-lyssnare efter att champions har laddats
+// Reattachar Eventlistener efter att champions har laddats
 function reattachEventListeners() {
     document.querySelectorAll('.champion-board').forEach(championBoard => {
         const addTimeButton = championBoard.querySelector('.add-time');
@@ -438,7 +439,7 @@ function reattachEventListeners() {
 
         const notesTextarea = championBoard.querySelector('.champion-notes');
         notesTextarea.addEventListener('input', saveChampions);
-        notesTextarea.addEventListener('blur', saveChampions); // Save on blur as well
+        notesTextarea.addEventListener('blur', saveChampions); 
     });
 }
 
@@ -451,7 +452,7 @@ function clearLeaderboards() {
     }
 }
 
-// Debounce-funktion för att begränsa hur ofta en funktion kan köras
+// Debounce-funktion för att begränsa hur ofta en funktion kan köras, det enda den gör här är egentligen att få searchbaren att kännas lite mer smooth
 function debounce(func, wait) {
     let timeout;
     return function(...args) {
