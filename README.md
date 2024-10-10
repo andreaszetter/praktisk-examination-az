@@ -20,11 +20,9 @@ Vill bara börja detta dokument med att säga att jag förstår att detta är al
   **Hur ska sidan användas?**
     Först lägger man till en "leaderboard" genom att söka på champions från League of Legends i 
     search baren, då lägger hemsidan till en "champion board" under rubriken leaderboards. 
-    På champion boarden finns en del olika funktioner så som en liten textruta där man kan 
-    skriva anteckningar som borde sparas även om hemsidan refreshas, en tabell med sina tider 
-    så man kan hålla koll på sina framsteg som också borde sparas.
+    På champion boarden finns en liten textruta där man kan skriva anteckningar och en tabell med sparade tider .
     För att lägga till tider i tabellen skriven man bara sin tid i formatet XmXs och då läggs 
-    den in i tid tabellen och sorteras från snabbast till långsammast. Navigation till about 
+    den in i tidtabellen och sorteras från snabbast till långsammast. Navigation till about 
     sidan sker via länkarna i headern, på about sidan kan man också se fulla splash arts av 
     de champions man har lagt till.  
 
