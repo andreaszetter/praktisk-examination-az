@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
     <link rel="stylesheet" href="styles.css">
-    <title>About Page</title>
 </head>
 <body>
-    <header>
-        <h1>About Page</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section class="container">
-            <article class="about">
-                <h2>About</h2>
-                <p>This is a simple web app that lets you track your jungle clear times in League of Legends. You can add champions to the leaderboards and track your progress. You can also add notes about your clears to help you improve your times.</p>
-            </article>
-        </section>
-        <h2>Champions You've Added</h2>
-        <section id="splash-arts-container" class="splash-arts-container">
-        </section>
-    </main>
-    <script src="scripts.js"></script>
+    <div class="wrapper">
+        <header>
+            <h1>About</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html" aria-current="page">About</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <p>This is a simple web app that lets you track your jungle clear times in League of Legends. You can add champion leaderboards and track your progress. You can also add notes about your jungling to help you remember what worked and what didn't.</p>
+
+            <section class="splash-arts-container" aria-label="Champion Splash Arts">
+                <!-- Splash arts will be dynamically inserted here based on your added champions in index.html! -->
+            </section>
+        </main>
+        <footer>
+            <p> 2024 Andreas Zetterlund</p>
+        </footer>
+    </div>
     <script src="about.js"></script>
 </body>
 </html>

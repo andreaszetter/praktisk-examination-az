@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>League of Legends Jungle Timers</title>
+    <title>League of Legends Jungle clears</title>
 </head>
 <body>
+    <div class="wrapper">
     <header>
-        <h1>LoL Jungle leaderboards</h1>
-        <nav>
+        <h1>LoL Jungle clears</h1>
+        <nav role="navigation" aria-label="Main navigation">
             <ul>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html" aria-current="page">Home</a></li>
                 <li><a href="about.html">About</a></li>
             </ul>
         </nav>
     </header>
-    <main>
+    <main role="main">
         <section class="container">
             <article class="add-champion">
                 <h2>How to add a champion:</h2>
@@ -25,8 +26,8 @@
                 <form id="champion-form">
                     <label for="champion-search">Champion:</label>
                     <div class="custom-select">
-                        <input type="text" id="champion-search" class="select-search" placeholder="Search champions..." autocomplete="off">
-                        <div class="select-items select-hide"></div>
+                        <input type="text" id="champion-search" class="select-search" placeholder="Search champions..." autocomplete="off" aria-label="Search champions">
+                        <div class="select-items select-hide" role="listbox" aria-label="Champion search results"></div>
                     </div>
                     <button type="submit">Add champion</button>
                 </form>
@@ -34,12 +35,15 @@
             <div class="timers">
                 <h2>Leaderboards</h2>
                 <button id="clear-leaderboards">Clear Leaderboards</button>
-                <div id="leaderboards"></div>
+                <div id="leaderboards" role="region" aria-live="polite" aria-label="Leaderboards"></div>
             </div>
-            
         </section>
     </main>
+    <footer>
+        <p>2024 Andreas Zetterlund</p>
+    </footer>
     
+    </div>
     <script src="scripts.js"></script>
 </body>
 </html>
