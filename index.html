@@ -8,16 +8,20 @@
 </head>
 <body>
     <header>
-        <h1>LoL Jungle clear times</h1>
+        <h1>LoL Jungle leaderboards</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
-        <div class="container">
-            <div class="add-champion">
+        <section class="container">
+            <article class="add-champion">
                 <h2>How to add a champion:</h2>
-                <h3>Select a champion by searching in the field below(it has all champions before patch 14.20.1)</h3>
-                <h3>After selecting a champion, click the button to add it to the leaderboards.</h3>
-                <h3>Then you can track how fast your jungle clears are by typing them in the format XmXXs</h3>
-                <h3>There is also a textfield next to each champions Leaderboard that can be used to note things about your clears</h3>
+                <h3>Simply search for the champion you want to track, and start adding times!</h3>
+                <h4>If something seems wrong refer to the about section</h4>
                 <form id="champion-form">
                     <label for="champion-search">Champion:</label>
                     <div class="custom-select">
@@ -26,13 +30,14 @@
                     </div>
                     <button type="submit">Add champion</button>
                 </form>
-            </div>
+            </article>
             <div class="timers">
                 <h2>Leaderboards</h2>
+                <button id="clear-leaderboards">Clear Leaderboards</button>
                 <div id="leaderboards"></div>
             </div>
-            <button id="clear-leaderboards">Clear Leaderboards</button>
-        </div>
+            
+        </section>
     </main>
     
     <script src="scripts.js"></script>

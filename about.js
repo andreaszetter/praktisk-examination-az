@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
 
-    // Hämta befintlig data från local storage
+    // Fetch champions and load from localStorage
     fetchChampions().then(() => {
         loadChampions();
     });
 
-    // Eventlsiteners till leaderboard clear
+    // Event listener for champion form submission
     const championForm = document.getElementById('champion-form');
     if (championForm) {
         championForm.addEventListener('submit', handleChampionFormSubmit);
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.error('Champion form not found');
     }
 
-    // Event-lyssnare för att rensa leaderboards
+    // Event listener for clearing leaderboards
     const clearLeaderboardsButton = document.getElementById('clear-leaderboards');
     if (clearLeaderboardsButton) {
         clearLeaderboardsButton.addEventListener('click', clearLeaderboards);
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.error('Clear leaderboards button not found');
     }
 
-    // Eventlisteners för dropdown funktioner
+    // Event listeners for search input
     const searchInput = document.querySelector('.select-search');
     if (searchInput) {
         searchInput.addEventListener('focus', showDropdown);
@@ -30,13 +30,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         searchInput.addEventListener('keydown', handleSearchInputKeydown);
     }
 
-    // Eventlistener för att klicka på champs i dropdown
+    // Event listener for select items
     const selectItems = document.querySelector('.select-items');
     if (selectItems) {
         selectItems.addEventListener('click', handleSelectItemClick);
     }
 
-    // Eventlistener för att klicka utanför dropdown
+    // Event listener for clicking outside the dropdown
     document.addEventListener('click', handleDocumentClick);
 });
 
@@ -60,7 +60,6 @@ function clearSearchInput() {
     if (selectItems) {
         selectItems.classList.add('select-hide');
     }
-    searchInput.addEventListener('input', showDropdown);
 }
 
 function showDropdown() {
@@ -147,7 +146,7 @@ function handleDocumentClick(event) {
         }
     }
 }
-//hämtar champ data från riots api
+
 function fetchChampions() {
     const apiUrl = 'https://ddragon.leagueoflegends.com/cdn/14.20.1/data/en_US/champion.json';
     return fetch(apiUrl)
@@ -187,7 +186,6 @@ function addChampion(championName, timers = [], notes = '') {
         return;
     }
 
-    // Skapar en ny champion board om den inte redan finns
     const championBoard = document.createElement('div');
     championBoard.id = championName;
     championBoard.classList.add('champion-board');
@@ -210,51 +208,16 @@ function addChampion(championName, timers = [], notes = '') {
             </tbody>
         </table>
         <input type="text" class="time-input" id="${championName}-time-input" name="${championName}-time-input" placeholder="Add time (e.g., 1m30s)">
-        <button class="add-time">Submit</button>
+        <button class="add-time">Add Time</button>
     `;
 
-    // Lägg till event-lyssnare till "Add Time"-knappen
     const addTimeButton = championBoard.querySelector('.add-time');
     const timeInput = championBoard.querySelector('.time-input');
-
-    const addTime = () => {
-        const timeText = timeInput.value.trim();
-
-        // Validera inmatningen
-        if (!timeText) {
-            timeInput.setCustomValidity('Time cannot be empty.');
-            timeInput.reportValidity();
-            return;
-        }
-
-        const timeMatch = timeText.match(/^(\d+m)?(\d+s)?$/);
-        if (!timeMatch) {
-            timeInput.setCustomValidity('Invalid time format. Use format like 1m30s.');
-            timeInput.reportValidity();
-            return;
-        }
-
-        const minutes = timeMatch[1] ? parseInt(timeMatch[1]) : 0;
-        const seconds = timeMatch[2] ? parseInt(timeMatch[2]) : 0;
-        if (seconds > 59) {
-            timeInput.setCustomValidity('Seconds cannot be more than 59.');
-            timeInput.reportValidity();
-            return;
-        }
-
-        timeInput.setCustomValidity('');
-        const timeTableBody = championBoard.querySelector('.time-table tbody');
-        const timeRow = createTimeRow(timeText);
-        insertTimeRow(timeTableBody, timeRow, timeText);
-        timeInput.value = '';
-        saveChampions();
-    };
-
-    addTimeButton.addEventListener('click', addTime);
+    addTimeButton.addEventListener('click', () => addTime(championBoard, timeInput));
     timeInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            addTime();
+            addTime(championBoard, timeInput);
         }
     });
 
@@ -268,8 +231,43 @@ function addChampion(championName, timers = [], notes = '') {
 
     const notesTextarea = championBoard.querySelector('.champion-notes');
     notesTextarea.addEventListener('input', saveChampions);
+}
 
-    clearSearchInput();
+function addTime(championBoard, timeInput) {
+    const timeText = timeInput.value.trim();
+    if (!validateTimeInput(timeText, timeInput)) return;
+
+    const timeTableBody = championBoard.querySelector('.time-table tbody');
+    const timeRow = createTimeRow(timeText);
+    insertTimeRow(timeTableBody, timeRow, timeText);
+    timeInput.value = '';
+    saveChampions();
+}
+
+function validateTimeInput(timeText, timeInput) {
+    if (!timeText) {
+        timeInput.setCustomValidity('Time cannot be empty.');
+        timeInput.reportValidity();
+        return false;
+    }
+
+    const timeMatch = timeText.match(/^(\d+m)?(\d+s)?$/);
+    if (!timeMatch) {
+        timeInput.setCustomValidity('Invalid time format. Use format like 1m30s.');
+        timeInput.reportValidity();
+        return false;
+    }
+
+    const minutes = timeMatch[1] ? parseInt(timeMatch[1]) : 0;
+    const seconds = timeMatch[2] ? parseInt(timeMatch[2]) : 0;
+    if (seconds > 59) {
+        timeInput.setCustomValidity('Seconds cannot be more than 59.');
+        timeInput.reportValidity();
+        return false;
+    }
+
+    timeInput.setCustomValidity('');
+    return true;
 }
 
 function createTimeRow(timeText) {
