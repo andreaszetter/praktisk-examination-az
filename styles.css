@@ -245,17 +245,21 @@ main{
     display: grid;
     gap: 10px;
     margin-top: 20px;
-    grid-template-columns: repeat(5, 1fr);
-    width: auto;
-    height:20vw;
+    grid-template-rows: 1fr min-content;
+    grid-template-columns: repeat(3,1fr);
+    width: 100%;
+    height:auto;
 }
 
 .champion-splash {
     width: 100%;
     height: auto;
-    background-size: cover;
-    background-position: top;
     border-radius: 10px;
+    height: 200px;
+    width: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 @media (max-width: 768px) {
