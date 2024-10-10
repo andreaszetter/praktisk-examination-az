@@ -46,14 +46,15 @@ Projektkrav:
     Som jag tidigare nämnt har jag gjort anpassningar för olika skärmstorlekar på både huvudsidan och även about sidan.
 
 4. Tillgänglighet
+
     Använde mig av aria labels och gjorde det möjligt att navigera i min egengjorda searchbar med hjälp av tangentbord. Använde även Aria labels för
     att uppdatera användare av t.ex screen readers dynamiskt medans hemsidan används.
 
-5. Webbläsarverktyg
+6. Webbläsarverktyg
     
     Jag använde framför allt chromes devtools för att debugga och testa olika features i min kod. Jag använde också inspektören för att se hemsidan i olika skärmstorlekar och kollade även tillgängligheten med hjälp av lighthouse som gav mig bra betyg(se lighthouseresultat.png i images)
 
-6. Versionshantering med Git
+7. Versionshantering med Git
     
     Har inte varit så duktig på att göra feature branches vilket jag fick lida för detta projekt, då jag råkade koda bort en del funktionalitet och hade inte commitat något på ett bra tag innan det, vilket ledde till att jag var tvungen att göra om en stor del av projektet. Råkade också göra repot
     private så vet inte om allt kommer att syns korrekt när den blir public men har som sagt gjort det jag kan! Har nu lärt mig min läxa om att använda git mer korrekt och göra feature branches och inte bara commita till main lite då och då
